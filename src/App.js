@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import MyCard from './components/uiDesign';
+import {Container,Row} from 'reactstrap';
 
 const App = () => {
   const [data, setData] = useState({});
@@ -13,9 +15,11 @@ const App = () => {
   }, []);
 
   return (
-    <ul>
-      {products.map(product => <li key={product.sku}>{product.title}</li>)}
-    </ul>
+    <Container>
+      <Row>
+    { products.map(product => <MyCard product={product} />)}
+    </Row>
+    </Container>
   );
 };
 
