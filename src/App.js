@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import MyCard from './components/uiDesign';
-import {Container,Row} from 'reactstrap';
+import React, { useEffect, useState } from "react";
+import { Container, Row } from "reactstrap";
+import MyCardList from "./components/MyCardList";
 
 const App = () => {
   const [data, setData] = useState({});
   const products = Object.values(data);
   useEffect(() => {
     const fetchProducts = async () => {
-      const response = await fetch('./data/products.json');
+      const response = await fetch("./data/products.json");
       const json = await response.json();
       setData(json);
     };
@@ -17,8 +17,8 @@ const App = () => {
   return (
     <Container>
       <Row>
-    { products.map(product => <MyCard product={product} />)}
-    </Row>
+        <MyCardList products={products} />
+      </Row>
     </Container>
   );
 };

@@ -5,10 +5,10 @@ const MyCard = ({product}) => {
     return (
 
             <Col xs="3">
-            <Card body className = "text-center">
+            <Card body className = "text-center" style={{height:550}}>
                 <CardImg src = {"data/products/" + product.sku + "_2.jpg"} alt="product pics"/>
                 <CardBody >
-                    <CardTitle>{product.title}</CardTitle>
+                    <CardTitle style={{height:30}}>{product.title}</CardTitle>
                     <CardText>{"$" + product.price}</CardText>
                     <CardLink href="#">S</CardLink>
                     <CardLink href="#">M</CardLink>
