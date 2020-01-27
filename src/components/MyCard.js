@@ -9,9 +9,29 @@ import {
   ButtonGroup,
   Button
 } from "reactstrap";
-
-const MyCard = ({ product, cartProduct, setCartProduct, setCartVisible }) => {
+/*
+<ButtonGroup size="sm">
+{sizes.map(size =>
+  checkInStock((size = { size }), productt) ? (
+    <Button onClick={() => addProduct(size, productt)}>
+      {size}
+    </Button>
+  ) : (
+    <Button disabled />
+  )
+)}
+</ButtonGroup>
+*/
+const MyCard = ({
+  product,
+  cartProduct,
+  setCartProduct,
+  setCartVisible,
+  inventory,
+  setInventory
+}) => {
   const productt = product;
+  const sizes = ["S", "M", "L", "XL"];
   const addProduct = (size, productt) => {
     setCartVisible(true);
 
@@ -26,9 +46,11 @@ const MyCard = ({ product, cartProduct, setCartProduct, setCartVisible }) => {
           )
         : [{ ...productt, size, quantity: 1 }].concat(cartProduct)
     );
-
-    console.log(cartProduct);
   };
+  const checkInStock = (size, productt) => {
+    console.log(inventory[productt.sku][size]);
+  };
+
   return (
     <Col xs="3" sm="3">
       <Card
@@ -44,10 +66,9 @@ const MyCard = ({ product, cartProduct, setCartProduct, setCartVisible }) => {
           <CardTitle style={{ height: "40px" }}>{product.title}</CardTitle>
           <CardText>{"$" + product.price}</CardText>
           <ButtonGroup size="sm">
-            <Button onClick={() => addProduct("S", productt)}>S</Button>
-            <Button onClick={() => addProduct("M", productt)}>M</Button>
-            <Button onClick={() => addProduct("L", productt)}>L</Button>
-            <Button onClick={() => addProduct("XL", productt)}>XL</Button>
+            {sizes.map(size => (
+              <Button onClick={() => addProduct(size, productt)}>{size}</Button>
+            ))}
           </ButtonGroup>
         </CardBody>
       </Card>

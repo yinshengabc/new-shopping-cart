@@ -5,7 +5,9 @@ const MyCardList = ({
   products,
   cartProduct,
   setCartProduct,
-  setCartVisible
+  setCartVisible,
+  inventory,
+  setInventory
 }) => {
   return products.map(product => (
     <MyCard
@@ -14,6 +16,8 @@ const MyCardList = ({
       cartProduct={cartProduct}
       setCartProduct={setCartProduct}
       setCartVisible={setCartVisible}
+      inventory={inventory}
+      setInventory={setInventory}
     />
   ));
 };
