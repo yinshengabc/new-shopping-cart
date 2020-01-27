@@ -1,14 +1,45 @@
 import React from "react";
-import MyProductList from "./MyProductList";
-import { Button } from "reactstrap";
-import ChooseSize from "./MyCard";
+import {
+  Card,
+  CardImg,
+  CardTitle,
+  CardText,
+  Row,
+  Col,
+  Button
+} from "reactstrap";
 
-const Cart = () => {
+const subtotal = ({ cartProduct }) => {
+  return cartProduct.length > 0
+    ? cartProduct.reduce((sum, one) => sum + one.price * one.quantity, 0)
+    : 0;
+};
+
+const Cart = ({ cartProduct }) => {
   return (
     <div>
-      <p>total price:</p>
-      <Button block>Checkout</Button>
+      <Button block>CHECKOUT</Button>
+      {cartProduct.map(product => (
+        <ShoppingCard key={product.title + product.size} product={product} />
+      ))}
+      <p style={{ color: "white", textAlign: "center" }}>
+        subtotal:{subtotal({ cartProduct })}
+      </p>
     </div>
+  );
+};
+
+const ShoppingCard = ({ product }) => {
+  return (
+    <Card body className="text-center">
+      <CardImg
+        src={"data/products/" + product.sku + "_2.jpg"}
+        alt="product pics"
+      />
+
+      <CardTitle>{product.title + "(" + product.size + ")"}</CardTitle>
+      <CardText>{"$" + product.price + "✖" + product.quantity}</CardText>
+    </Card>
   );
 };
 

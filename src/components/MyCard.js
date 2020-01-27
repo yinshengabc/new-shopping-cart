@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   Col,
   Card,
@@ -10,7 +10,25 @@ import {
   Button
 } from "reactstrap";
 
-const MyCard = ({ product }) => {
+const MyCard = ({ product, cartProduct, setCartProduct, setCartVisible }) => {
+  const productt = product;
+  const addProduct = (size, productt) => {
+    setCartVisible(true);
+
+    setCartProduct(
+      cartProduct.some(
+        product => product.title === productt.title && product.size === size
+      )
+        ? cartProduct.map(product =>
+            product.title === productt.title && product.size === size
+              ? { ...product, quantity: product.quantity + 1 }
+              : product
+          )
+        : [{ ...productt, size, quantity: 1 }].concat(cartProduct)
+    );
+
+    console.log(cartProduct);
+  };
   return (
     <Col xs="3" sm="3">
       <Card
@@ -26,10 +44,10 @@ const MyCard = ({ product }) => {
           <CardTitle style={{ height: "40px" }}>{product.title}</CardTitle>
           <CardText>{"$" + product.price}</CardText>
           <ButtonGroup size="sm">
-            <Button onclick={() => ChooseSize("S", product)}>S</Button>
-            <Button onclick={() => ChooseSize("M", product)}>M</Button>
-            <Button onclick={() => ChooseSize("L", product)}>L</Button>
-            <Button onclick={() => ChooseSize("XL", product)}>XL</Button>
+            <Button onClick={() => addProduct("S", productt)}>S</Button>
+            <Button onClick={() => addProduct("M", productt)}>M</Button>
+            <Button onClick={() => addProduct("L", productt)}>L</Button>
+            <Button onClick={() => addProduct("XL", productt)}>XL</Button>
           </ButtonGroup>
         </CardBody>
       </Card>
@@ -37,18 +55,4 @@ const MyCard = ({ product }) => {
   );
 };
 
-const ChooseSize = ({ size, product }) => {
-  return (
-    <Card>
-      <CardImg
-        src={"data/products/" + product.sku + "_2.jpg"}
-        alt="product pics"
-      />
-      <CardText>{product.title}</CardText>
-      <CardText>{size}</CardText>
-    </Card>
-  );
-};
-
 export default MyCard;
-export { ChooseSize };
