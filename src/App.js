@@ -3,6 +3,8 @@ import { Container, Row, Button } from "reactstrap";
 import MyCardList from "./components/MyCardList";
 import Sidebar from "react-sidebar";
 import Cart from "./components/Cart";
+import db from "./components/Firebase";
+import firebase from "firebase/app";
 
 const App = () => {
   const [data, setData] = useState({});
@@ -18,14 +20,17 @@ const App = () => {
       //console.log(json);
       setData(json);
     };
-    const fetchInventories = async () => {
-      const response = await fetch("./data/inventory.json");
-      const json = await response.json();
-      //console.log(json);
-      setInventory(json);
-    };
     fetchProducts();
-    fetchInventories();
+
+    const handleData = snap => {
+      if (snap.val()) {
+        setInventory(snap.val());
+      }
+    };
+    db.on("value", handleData, error => alert(error));
+    return () => {
+      db.off("value", handleData);
+    };
   }, []);
 
   return (
