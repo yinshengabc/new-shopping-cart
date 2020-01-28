@@ -9,19 +9,7 @@ import {
   ButtonGroup,
   Button
 } from "reactstrap";
-/*
-<ButtonGroup size="sm">
-{sizes.map(size =>
-  checkInStock((size = { size }), productt) ? (
-    <Button onClick={() => addProduct(size, productt)}>
-      {size}
-    </Button>
-  ) : (
-    <Button disabled />
-  )
-)}
-</ButtonGroup>
-*/
+
 const MyCard = ({
   product,
   cartProduct,
@@ -46,9 +34,17 @@ const MyCard = ({
           )
         : [{ ...productt, size, quantity: 1 }].concat(cartProduct)
     );
+    inventory[[productt.sku]][size] -= 1;
+    setInventory(inventory);
   };
+
   const checkInStock = (size, productt) => {
-    console.log(inventory[productt.sku][size]);
+    if (
+      Object.keys(inventory).length > 0 &&
+      inventory[[productt.sku]][size] !== 0
+    )
+      return true;
+    else return false;
   };
 
   return (
@@ -66,9 +62,15 @@ const MyCard = ({
           <CardTitle style={{ height: "40px" }}>{product.title}</CardTitle>
           <CardText>{"$" + product.price}</CardText>
           <ButtonGroup size="sm">
-            {sizes.map(size => (
-              <Button onClick={() => addProduct(size, productt)}>{size}</Button>
-            ))}
+            {sizes.map(size =>
+              checkInStock(size, productt) ? (
+                <Button onClick={() => addProduct(size, productt)}>
+                  {size}
+                </Button>
+              ) : (
+                <Button disabled>-</Button>
+              )
+            )}
           </ButtonGroup>
         </CardBody>
       </Card>

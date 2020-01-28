@@ -10,16 +10,18 @@ const App = () => {
   const [cartProduct, setCartProduct] = useState([]);
   const [inventory, setInventory] = useState({});
   const products = Object.values(data);
-
+  // const inventories = Object.values(inventory);
   useEffect(() => {
     const fetchProducts = async () => {
       const response = await fetch("./data/products.json");
       const json = await response.json();
+      //console.log(json);
       setData(json);
     };
     const fetchInventories = async () => {
       const response = await fetch("./data/inventory.json");
       const json = await response.json();
+      //console.log(json);
       setInventory(json);
     };
     fetchProducts();
@@ -33,7 +35,8 @@ const App = () => {
           cartProduct={cartProduct}
           setCartVisible={setCartVisible}
           setCartProduct={setCartProduct}
-          cartProduct={cartProduct}
+          inventory={inventory}
+          setInventory={setInventory}
         />
       }
       open={cartVisible}

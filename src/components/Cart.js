@@ -1,5 +1,3 @@
-//need to do : roundsubtotal
-
 import React from "react";
 import {
   Card,
@@ -11,12 +9,17 @@ import {
 } from "reactstrap";
 
 const subtotal = ({ cartProduct }) => {
-  return cartProduct.length > 0
-    ? cartProduct.reduce((sum, one) => sum + one.price * one.quantity, 0)
-    : 0;
+  let num = cartProduct.reduce((sum, one) => sum + one.price * one.quantity, 0);
+  return cartProduct.length > 0 ? num.toFixed(2) : 0;
 };
 
-const Cart = ({ cartProduct, setCartVisible, setCartProduct }) => {
+const Cart = ({
+  cartProduct,
+  setCartVisible,
+  setCartProduct,
+  inventory,
+  setInventory
+}) => {
   return (
     <div>
       <Button
@@ -31,32 +34,47 @@ const Cart = ({ cartProduct, setCartVisible, setCartProduct }) => {
           product={product}
           setCartProduct={setCartProduct}
           cartProduct={cartProduct}
+          inventory={inventory}
+          setInventory={setInventory}
         />
       ))}
       <p style={{ color: "white", textAlign: "center" }}>
-        subtotal:{subtotal({ cartProduct })}
+        subtotal: ${subtotal({ cartProduct })}
       </p>
     </div>
   );
 };
 
-const ShoppingCard = ({ product, setCartProduct, cartProduct }) => {
+const ShoppingCard = ({
+  product,
+  setCartProduct,
+  cartProduct,
+  inventory,
+  setInventory
+}) => {
+  const removeProduct = () => {
+    setCartProduct(
+      cartProduct.filter(
+        productt =>
+          product.sku !== productt.sku || product.size !== productt.size
+      )
+    );
+    inventory[[product.sku]][product.size] += product.quantity;
+    setInventory(inventory);
+  };
+
   const removeOne = () => {
     setCartProduct(
       cartProduct.map(productt =>
-        product.sku === productt.sku && product.size === productt.size
-          ? productt.quantity > 1
-            ? { ...productt, quantity: productt.quantity - 1 }
-            : cartProduct.filter(
-                productt =>
-                  !(
-                    product.sku === productt.sku &&
-                    product.size === productt.size
-                  )
-              )
+        product.sku === productt.sku &&
+        product.size === productt.size &&
+        productt.quantity > 1
+          ? { ...productt, quantity: productt.quantity - 1 }
           : productt
       )
     );
+    inventory[[product.sku]][product.size] += 1;
+    setInventory(inventory);
   };
 
   const addOne = () => {
@@ -67,6 +85,17 @@ const ShoppingCard = ({ product, setCartProduct, cartProduct }) => {
           : productt
       )
     );
+    inventory[[product.sku]][product.size] -= 1;
+    setInventory(inventory);
+  };
+
+  const checkAddButton = () => {
+    if (
+      Object.keys(inventory).length > 0 &&
+      inventory[[product.sku]][product.size] !== 0
+    )
+      return true;
+    else return false;
   };
 
   return (
@@ -82,8 +111,20 @@ const ShoppingCard = ({ product, setCartProduct, cartProduct }) => {
         <Button outline color="secondary" size="sm" onClick={() => removeOne()}>
           -
         </Button>
-        <Button outline color="secondary" size="sm" onClick={() => addOne()}>
-          +
+        {checkAddButton() ? (
+          <Button outline color="secondary" size="sm" onClick={() => addOne()}>
+            +
+          </Button>
+        ) : (
+          <Button disabled />
+        )}
+        <Button
+          outline
+          color="secondary"
+          size="sm"
+          onClick={() => removeProduct()}
+        >
+          ×
         </Button>
       </ButtonGroup>
     </Card>
