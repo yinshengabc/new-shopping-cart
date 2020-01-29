@@ -52,15 +52,19 @@ const MyCard = ({
       <Card
         body
         className="text-center"
-        style={{ height: "450", margin: "10px" }}
+        style={{ height: "500", margin: "10px" }}
       >
         <CardBody>
           <CardImg
             src={"data/products/" + product.sku + "_1.jpg"}
             alt="product pics"
           />
-          <CardTitle style={{ height: "40px" }}>{product.title}</CardTitle>
-          <CardText>{"$" + product.price}</CardText>
+          <CardTitle style={{ height: "30px", fontSize: "15px" }}>
+            {product.title}
+          </CardTitle>
+          <CardText style={{ fontFamily: "Ink Free" }}>
+            {"$" + product.price}
+          </CardText>
           <ButtonGroup size="sm">
             {sizes.map(size =>
               checkInStock(size, productt) ? (

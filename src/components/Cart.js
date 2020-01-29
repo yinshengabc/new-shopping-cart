@@ -1,11 +1,13 @@
 import React from "react";
+import db from "./Firebase";
 import {
   Card,
   CardImg,
   CardTitle,
   CardText,
   Button,
-  ButtonGroup
+  ButtonGroup,
+  Alert
 } from "reactstrap";
 
 const subtotal = ({ cartProduct }) => {
@@ -18,16 +20,35 @@ const Cart = ({
   setCartVisible,
   setCartProduct,
   inventory,
-  setInventory
+  setInventory,
+  user
 }) => {
+  const checkOut = () => {
+    db.transaction(inventory => {
+      cartProduct.map(
+        item => (inventory[[item.sku]][item.size] -= item.quantity)
+      );
+    });
+    setCartProduct([]);
+    return <Alert color="success">successfully check out</Alert>;
+  };
+
   return (
     <div>
       <Button
         close
-        style={{ float: "left", backgroundColor: "white" }}
+        style={{ float: "left", color: "white" }}
         onClick={() => setCartVisible(false)}
       />
-      <Button block>CHECKOUT</Button>
+      {user ? (
+        <Button block onClick={() => checkOut()}>
+          CHECKOUT
+        </Button>
+      ) : (
+        <Alert color="warning">
+          PLEASE <b style={{ color: "red" }}>SIGN IN</b> TO CHECK OUT
+        </Alert>
+      )}
       {cartProduct.map(product => (
         <ShoppingCard
           key={product.title + product.size}
@@ -116,7 +137,9 @@ const ShoppingCard = ({
             +
           </Button>
         ) : (
-          <Button disabled />
+          <Button size="sm" disabled>
+            +
+          </Button>
         )}
         <Button
           outline

@@ -49,6 +49,7 @@ const App = () => {
           setCartProduct={setCartProduct}
           inventory={inventory}
           setInventory={setInventory}
+          user={user}
         />
       }
       open={cartVisible}

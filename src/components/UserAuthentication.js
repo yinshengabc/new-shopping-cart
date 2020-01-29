@@ -3,7 +3,6 @@ import "firebase/auth";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 import firebase from "firebase/app";
 import { Button } from "reactstrap";
-import { Message } from "rbx";
 
 const uiConfig = {
   signInFlow: "popup",
@@ -18,14 +17,14 @@ const UserAuthentication = ({ user }) => (
 );
 
 const Welcome = ({ user }) => (
-  <Message.Header style={{ float: "right" }}>
+  <div style={{ float: "right" }}>
     <b>Welcome,</b> <br />
     {user.displayName}
     <br />
     <Button size="sm" primary onClick={() => firebase.auth().signOut()}>
       Log out
     </Button>
-  </Message.Header>
+  </div>
 );
 
 const SignIn = () => (
