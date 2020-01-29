@@ -76,8 +76,7 @@ const ShoppingCard = ({
   const removeProduct = () => {
     setCartProduct(
       cartProduct.filter(
-        productt =>
-          product.sku !== productt.sku || product.size !== productt.size
+        item => product.sku !== item.sku || product.size !== item.size
       )
     );
     inventory[[product.sku]][product.size] += product.quantity;
@@ -86,12 +85,12 @@ const ShoppingCard = ({
 
   const removeOne = () => {
     setCartProduct(
-      cartProduct.map(productt =>
-        product.sku === productt.sku &&
-        product.size === productt.size &&
-        productt.quantity > 1
-          ? { ...productt, quantity: productt.quantity - 1 }
-          : productt
+      cartProduct.map(item =>
+        product.sku === item.sku &&
+        product.size === item.size &&
+        item.quantity > 1
+          ? { ...item, quantity: item.quantity - 1 }
+          : item
       )
     );
     inventory[[product.sku]][product.size] += 1;
@@ -100,10 +99,10 @@ const ShoppingCard = ({
 
   const addOne = () => {
     setCartProduct(
-      cartProduct.map(productt =>
-        product.sku === productt.sku && product.size === productt.size
-          ? { ...productt, quantity: productt.quantity + 1 }
-          : productt
+      cartProduct.map(item =>
+        product.sku === item.sku && product.size === item.size
+          ? { ...item, quantity: item.quantity + 1 }
+          : item
       )
     );
     inventory[[product.sku]][product.size] -= 1;

@@ -16,32 +16,32 @@ const MyCard = ({
   setCartProduct,
   setCartVisible,
   inventory,
-  setInventory
+  setInventory,
+  user
 }) => {
-  const productt = product;
   const sizes = ["S", "M", "L", "XL"];
-  const addProduct = (size, productt) => {
+  const addProduct = (size, product) => {
     setCartVisible(true);
 
     setCartProduct(
       cartProduct.some(
-        product => product.title === productt.title && product.size === size
+        item => item.title === product.title && item.size === size
       )
-        ? cartProduct.map(product =>
-            product.title === productt.title && product.size === size
-              ? { ...product, quantity: product.quantity + 1 }
-              : product
+        ? cartProduct.map(item =>
+            item.title === product.title && item.size === size
+              ? { ...item, quantity: item.quantity + 1 }
+              : item
           )
-        : [{ ...productt, size, quantity: 1 }].concat(cartProduct)
+        : [{ ...product, size, quantity: 1 }].concat(cartProduct)
     );
-    inventory[[productt.sku]][size] -= 1;
+    inventory[[product.sku]][size] -= 1;
     setInventory(inventory);
   };
 
-  const checkInStock = (size, productt) => {
+  const checkInStock = (size, product) => {
     if (
       Object.keys(inventory).length > 0 &&
-      inventory[[productt.sku]][size] !== 0
+      inventory[[product.sku]][size] !== 0
     )
       return true;
     else return false;
@@ -59,16 +59,22 @@ const MyCard = ({
             src={"data/products/" + product.sku + "_1.jpg"}
             alt="product pics"
           />
-          <CardTitle style={{ height: "30px", fontSize: "15px" }}>
-            {product.title}
-          </CardTitle>
+          {user ? (
+            <CardTitle style={{ height: "55px", fontSize: "15px" }}>
+              {product.title}
+            </CardTitle>
+          ) : (
+            <CardTitle style={{ height: "35px", fontSize: "15px" }}>
+              {product.title}
+            </CardTitle>
+          )}
           <CardText style={{ fontFamily: "Ink Free" }}>
             {"$" + product.price}
           </CardText>
           <ButtonGroup size="sm">
             {sizes.map(size =>
-              checkInStock(size, productt) ? (
-                <Button onClick={() => addProduct(size, productt)}>
+              checkInStock(size, product) ? (
+                <Button onClick={() => addProduct(size, product)}>
                   {size}
                 </Button>
               ) : (

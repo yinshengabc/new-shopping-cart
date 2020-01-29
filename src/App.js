@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Container, Row, Button } from "reactstrap";
+import { Container, Row } from "reactstrap";
 import MyCardList from "./components/MyCardList";
 import Sidebar from "react-sidebar";
 import Cart from "./components/Cart";
@@ -7,6 +7,7 @@ import db from "./components/Firebase";
 import firebase from "firebase/app";
 import "firebase/auth";
 import UserAuthentication from "./components/UserAuthentication";
+import { IoIosCart } from "react-icons/io";
 
 const App = () => {
   const [data, setData] = useState({});
@@ -59,7 +60,11 @@ const App = () => {
     >
       <Container style={{ paddingRight: "100px" }}>
         <h1>My Shopping Cart</h1>
-        <Button onClick={() => setCartVisible(true)}>Open cart</Button>
+        <IoIosCart
+          onClick={() => setCartVisible(true)}
+          style={{ float: "right" }}
+        ></IoIosCart>
+
         <UserAuthentication user={user} />
         <Row>
           <MyCardList
@@ -69,6 +74,7 @@ const App = () => {
             setCartVisible={setCartVisible}
             inventory={inventory}
             setInventory={setInventory}
+            user={user}
           />
         </Row>
       </Container>
